@@ -1,12 +1,13 @@
 const SMTPServer = require('smtp-server').SMTPServer;
 const _ = require('lodash');
 const sendmail = require('sendmail')();
+const userDao = require('./userDao');
 
 const server = new SMTPServer({
     logger: true,
     hideSTARTTLS: true,
     onAuth(auth, session, callback) {
-        if (auth.username !== 'wangbowen' || auth.password !== 'wangbowen') {
+        if (!userDao.findUser(auth)) {
             return callback(new Error('Invalid username or password'));
         }
         callback(null, {
