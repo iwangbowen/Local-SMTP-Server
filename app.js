@@ -24,7 +24,7 @@ const server = new SMTPServer({
         stream.on('end', () => {
             // 邮件头之间用换行符分隔，最后一个邮件头和邮件的
             // 具体内容之间包含一个空行，所以用两个换行符分隔
-            // 邮件头和邮件内容
+            // 邮件头和邮件内容(注意：邮件正文同样有可能包含\r\n\r\n)
             let mail = str.split('\r\n\r\n');
             let headers = _.first(mail)
                 .split('\r\n')
@@ -35,11 +35,10 @@ const server = new SMTPServer({
             // 包含非ASCII码的正文会被base64编码，包含Content-Transfer-Encoding消息头
             let content = '';
             if (headers['Content-Transfer-Encoding'] && headers['Content-Transfer-Encoding'] == 'base64') {
-                content = new Buffer(_.last(mail), 'base64').toString('utf8');
+                content = new Buffer(_.tail(mail).join('\r\n\r\n'), 'base64').toString('utf8');
             } else {
-                content = _.last(mail);
+                content = _.tail(mail).join('\r\n\r\n');
             }
-
             sendmail({
                 from: headers.From,
                 to: headers.To,
