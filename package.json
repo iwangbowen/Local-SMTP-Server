@@ -1,0 +1,17 @@
+{
+  "name": "nodemailer-smtp-server",
+  "version": "1.0.0",
+  "description": "A simple smtp server for development environment",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bowen Wang",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "nodemailer": "^4.3.1",
+    "sendmail": "^1.2.0",
+    "smtp-server": "^3.3.0"
+  }
+}
